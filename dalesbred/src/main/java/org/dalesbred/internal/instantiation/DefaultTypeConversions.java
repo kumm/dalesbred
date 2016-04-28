@@ -40,8 +40,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.*;
+import java.sql.Date;
 import java.time.*;
-import java.util.TimeZone;
+import java.util.*;
 
 final class DefaultTypeConversions {
 
@@ -55,6 +56,9 @@ final class DefaultTypeConversions {
         registry.registerConversions(String.class, URL.class, DefaultTypeConversions::convertStringToUrl, URL::toString);
         registry.registerConversions(String.class, URI.class, DefaultTypeConversions::convertStringToUri, URI::toString);
         registry.registerConversions(String.class, TimeZone.class, TimeZone::getTimeZone, TimeZone::getID);
+
+        registry.registerConversionFromDatabase(Timestamp.class, java.util.Date.class, timestamp -> new java.util.Date(timestamp.getTime()));
+        registry.registerConversionFromDatabase(Date.class, java.util.Date.class, date -> new java.util.Date(date.getTime()));
 
         registry.registerConversionFromDatabase(Number.class, Short.class, Number::shortValue);
         registry.registerConversionFromDatabase(Number.class, Integer.class, Number::intValue);

@@ -262,12 +262,12 @@ public final class InstantiatorProvider {
      */
     @NotNull
     private Optional<TypeConversion> findConversionFromDbValue(@NotNull Type source, @NotNull Type target) {
-        if (isAssignable(target, source))
-            return Optional.of(TypeConversion.identity());
-
         Optional<TypeConversion> directConversion = typeConversionRegistry.findConversionFromDbValue(source, target);
         if (directConversion.isPresent())
             return directConversion;
+
+        if (isAssignable(target, source))
+            return Optional.of(TypeConversion.identity());
 
         Optional<TypeConversion> arrayConversion = findArrayConversion(source, target);
         if (arrayConversion.isPresent())
